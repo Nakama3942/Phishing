@@ -1,8 +1,8 @@
 import configparser
 import smtplib
 import datetime
-from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 
 if __name__ == '__main__':
@@ -34,10 +34,12 @@ if __name__ == '__main__':
             config.write(config_file)
 
     email_receiver = input("\nEnter the recipient's address: ")
+    phish_link = input("\nEnter the phishing link: ")
     with open("message.txt", "r", encoding="utf-8") as msg:
         read_message = msg.read()
         subject, body = read_message.split("\n$separator$\n")
         body = body.replace("$date", str(datetime.datetime.today()).split(" ")[0])
+        body = body.replace("$link", phish_link)
 
     print("Wait, the letter is being sent")
 
