@@ -1,6 +1,8 @@
 import configparser
 import smtplib
-from email.message import EmailMessage
+import datetime
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 
 if __name__ == '__main__':
@@ -32,21 +34,21 @@ if __name__ == '__main__':
             config.write(config_file)
 
     email_receiver = input("\nEnter the recipient's address: ")
-    with open("subject.txt", "r", encoding="utf-8") as f1:
-        subject = f1.read()
-    with open("body.txt", "r", encoding="utf-8") as f2:
-        body = f2.read()
+    with open("message.txt", "r", encoding="utf-8") as msg:
+        read_message = msg.read()
+        subject, body = read_message.split("\n$separator$\n")
+        body = body.replace("$date", str(datetime.datetime.today()).split(" ")[0])
 
-    print("\nWait, the letter is being sent")
+    print("Wait, the letter is being sent")
 
-    message = EmailMessage()
+    message = MIMEMultipart()
     message['From'] = email_sender
     message['To'] = email_receiver
     message['Subject'] = subject
-    message.set_content(body)
+    message.attach(MIMEText(body, 'html'))
 
     server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
     server.login(email_sender, email_password)
     server.sendmail(email_sender, email_receiver, message.as_string())
 
-    print("\nThe letter was sent successfully")
+    print("The letter was sent successfully")
