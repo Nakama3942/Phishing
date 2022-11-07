@@ -1,4 +1,4 @@
-# NameMail
+# Phishing
 The program is a solution to the task from the fifth laboratory on the subject "Network Information Technologies".
 
 ## Overview
